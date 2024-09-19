@@ -1,58 +1,58 @@
 package com.example.loginsample;
 
 public class AccountEntity {
-    private string firstname;
-    private string lastname;
-    private string email;
-    private string phone;
-    private string username;
-    private string password;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String phone;
+    private String username;
+    private String password;
 
-    public string getFirstname() {
+    public String getFirstname() {
         return firstname;
     }
 
-    public void setFirstname(string firstname) {
+    public void setFirstname(String firstname) {
         this.firstname = firstname;
     }
 
-    public string getLastname() {
+    public String getLastname() {
         return lastname;
     }
 
-    public void setLastname(string lastname) {
+    public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public string getEmail() {
+    public String getEmail() {
         return email;
     }
 
-    public void setEmail(string email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    public string getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(string phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
-    public string getUsername() {
+    public String getUsername() {
         return username;
     }
 
-    public void setUsername(string username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public string getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(string password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 }
