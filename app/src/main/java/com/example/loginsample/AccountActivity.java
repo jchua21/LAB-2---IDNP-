@@ -29,9 +29,14 @@ public class AccountActivity extends AppCompatActivity {
         EditText edtFirstname = findViewById(R.id.edtFirstname);
         EditText edtLastname = findViewById(R.id.edtLastname);
         EditText edtEmail = findViewById(R.id.edtEmail);
+        EditText edtPhone = findViewById(R.id.edtTextPhone);
+        EditText edtUsername2 = findViewById(R.id.edtUsername2);
+
         btnAceptar.setOnClickListener(v->{
             AccountEntity accountEntity=new AccountEntity();
-
+            accountEntity.setFirstname(edtFirstname.getText().toString());
+            accountEntity.setLastname(edtLastname.getText().toString());
+            
         });
     }
 }
