@@ -1,6 +1,9 @@
 package com.example.loginsample;
 
+import android.accounts.Account;
 import android.os.Bundle;
+import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +22,16 @@ public class AccountActivity extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
+        });
+
+        Button btnAceptar=findViewById(R.id.btnAceptar);
+        Button btnCancelar=findViewById(R.id.btnCancelar);
+        EditText edtFirstname = findViewById(R.id.edtFirstname);
+        EditText edtLastname = findViewById(R.id.edtLastname);
+        EditText edtEmail = findViewById(R.id.edtEmail);
+        btnAceptar.setOnClickListener(v->{
+            AccountEntity accountEntity=new AccountEntity();
+
         });
     }
 }
