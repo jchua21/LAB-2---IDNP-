@@ -1,6 +1,7 @@
 package com.example.loginsample;
 
 import android.accounts.Account;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,12 +32,19 @@ public class AccountActivity extends AppCompatActivity {
         EditText edtEmail = findViewById(R.id.edtEmail);
         EditText edtPhone = findViewById(R.id.edtTextPhone);
         EditText edtUsername2 = findViewById(R.id.edtUsername2);
-
+        EditText edtPassword2 = findViewById(R.id.edtPassword2);
         btnAceptar.setOnClickListener(v->{
             AccountEntity accountEntity=new AccountEntity();
             accountEntity.setFirstname(edtFirstname.getText().toString());
             accountEntity.setLastname(edtLastname.getText().toString());
+            accountEntity.setEmail(edtEmail.getText().toString());
+            accountEntity.setPhone(edtPhone.getText().toString());
+            accountEntity.setUsername(edtUsername2.getText().toString());
+            accountEntity.setPassword(edtPassword2.getText().toString());
+
+            Intent data=new Intent();
             
+
         });
     }
 }
