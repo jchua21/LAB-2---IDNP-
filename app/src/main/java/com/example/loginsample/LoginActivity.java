@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginsample.databinding.ActivityMainBinding;
+import com.google.gson.Gson;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
@@ -67,9 +68,14 @@ public class LoginActivity extends AppCompatActivity {
                     Integer resultCode=o.getResultCode();
                     if(resultCode==AccountActivity.ACCOUNT_ACEPTAR){
                         Intent data=o.getData();
+                        String account_record = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
+                        Gson gson= new Gson();
+                        AccountEntity accountEntity = gson.fromJson(account_record, AccountEntity.class);
+                        String firstName = accountEntity.getFirstname();
+                        Toast.makeText(getApplicationContext(),"Nombre" + firstName,Toast.LENGTH_SHORT).show();
                     }
                     else if(resultCode==AccountActivity.ACCOUNT_CANCELAR){
-                        Toast.makeText(getApplicationContext(),"cancelado",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(),"Cancelado",Toast.LENGTH_SHORT).show();
                     }
                 }
             }
