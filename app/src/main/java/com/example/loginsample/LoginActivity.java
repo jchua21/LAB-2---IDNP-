@@ -65,7 +65,12 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onActivityResult(ActivityResult o) {
                     Integer resultCode=o.getResultCode();
-                    Intent data = o.getData();
+                    if(resultCode==AccountActivity.ACCOUNT_ACEPTAR){
+                        Intent data=o.getData();
+                    }
+                    else if(resultCode==AccountActivity.ACCOUNT_CANCELAR){
+                        Toast.makeText(getApplicationContext(),"cancelado",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
     );
