@@ -85,16 +85,15 @@ public class LoginActivity extends AppCompatActivity {
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult o) {
-                    Integer resultCode=o.getResultCode();
-                    if(resultCode==AccountActivity.ACCOUNT_ACEPTAR){
-                        Intent data=o.getData();
+                    Integer resultCode = o.getResultCode();
+                    if (resultCode == AccountActivity.ACCOUNT_ACEPTAR) {
+                        Intent data = o.getData();
                         accountEntityString = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
                         saveAccountToFile();
                         Toast.makeText(getApplicationContext(), "Cuenta creada exitosamente", Toast.LENGTH_LONG).show();
-                    }
-                    else if(resultCode.equals(AccountActivity.ACCOUNT_CANCELAR)){
-                        Toast.makeText(getApplicationContext(),"Cancelado",Toast.LENGTH_LONG).show();
-                        Log.d("LoginActivity", "Cancelado" );
+                    } else if (resultCode.equals(AccountActivity.ACCOUNT_CANCELAR)) {
+                        Toast.makeText(getApplicationContext(), "Cancelado", Toast.LENGTH_LONG).show();
+                        Log.d("LoginActivity", "Cancelado");
                     }
                 }
             }
@@ -106,6 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             Log.v("string del account entity",accountEntityString);
             // Escribe los datos en el archivo
             osw.write(accountEntityString);
+            osw.write("\n");
             osw.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -126,9 +126,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.v("contenido",line);
                 // Usa Gson para convertir la línea de JSON en un objeto AccountEntity
                 AccountEntity account = gson.fromJson(line, AccountEntity.class);
-                    if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
-                        return true; // Las credenciales coinciden
-                    }
+
+                if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
+                    return true; // Las credenciales coinciden
+                }
 
             }
             br.close();
