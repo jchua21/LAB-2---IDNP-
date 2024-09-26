@@ -19,12 +19,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.loginsample.databinding.ActivityMainBinding;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class LoginActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
-    private AccountEntity accountEntity;
     private String accountEntityString;
-
+    private static final String ACCOUNTS_FILE = "cuentas.txt";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,19 +53,15 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if(edtUsername.getText().toString().equals("admin") &&
-                edtPassword.getText().toString().equals("admin")){
-                    Toast.makeText(getApplicationContext(),"Bienvenido a mi App",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,"Bienvenido a mi App");
-
+                String username = edtUsername.getText().toString();
+                String password = edtPassword.getText().toString();
+                if (checkCredentials(username, password)) {
+                    Toast.makeText(getApplicationContext(), "Bienvenido " + username, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
-                    intent.putExtra("ACCOUNT", accountEntityString);
-
-                    startActivity(intent);
-                }
-                else{
-                    Toast.makeText(getApplicationContext(),"Error en la autenticacion",Toast.LENGTH_SHORT).show();
-                    Log.d(TAG,"Error en la autenticacion");
+                    intent.putExtra("USERNAME", username);
+                    activityResultLauncher2.launch(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Cuenta no encontrada", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -67,9 +69,17 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(),AccountActivity.class);
             activityResultLauncher.launch(intent);
 
-
         });
     }
+    ActivityResultLauncher<Intent> activityResultLauncher2 = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+        @Override
+        public void onActivityResult(ActivityResult o) {
+            //nothing yet
+        }
+    }
+    );
     ActivityResultLauncher<Intent> activityResultLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
@@ -79,11 +89,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(resultCode==AccountActivity.ACCOUNT_ACEPTAR){
                         Intent data=o.getData();
                         accountEntityString = data.getStringExtra(AccountActivity.ACCOUNT_RECORD);
-                        Gson gson= new Gson();
-                        accountEntity = gson.fromJson(accountEntityString, AccountEntity.class);
-                        String firstName = accountEntity.getFirstname();
-                        Toast.makeText(getApplicationContext(),"Nombre" + firstName,Toast.LENGTH_LONG).show();
-                        Log.d("LoginActivity", "Nombre" + firstName);
+                        saveAccountToFile();
+                        Toast.makeText(getApplicationContext(), "Cuenta creada exitosamente", Toast.LENGTH_LONG).show();
                     }
                     else if(resultCode.equals(AccountActivity.ACCOUNT_CANCELAR)){
                         Toast.makeText(getApplicationContext(),"Cancelado",Toast.LENGTH_LONG).show();
@@ -92,4 +99,43 @@ public class LoginActivity extends AppCompatActivity {
                 }
             }
     );
+    private void saveAccountToFile() {
+        try {
+            FileOutputStream fos = openFileOutput(ACCOUNTS_FILE, MODE_APPEND);
+            OutputStreamWriter osw = new OutputStreamWriter(fos);
+            Log.v("string del account entity",accountEntityString);
+            // Escribe los datos en el archivo
+            osw.write(accountEntityString);
+            osw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("LoginActivity", "Error saving account to file", e);
+        }
+    }
+
+    private boolean checkCredentials(String username, String password) {
+        try {
+            // Abre el archivo en modo lectura
+            FileInputStream fis = openFileInput(ACCOUNTS_FILE);
+            InputStreamReader isr = new InputStreamReader(fis);
+            BufferedReader br = new BufferedReader(isr);
+            Gson gson=new Gson();
+            String line;
+            // Lee cada línea del archivo
+            while ((line = br.readLine()) != null) {
+                Log.v("contenido",line);
+                // Usa Gson para convertir la línea de JSON en un objeto AccountEntity
+                AccountEntity account = gson.fromJson(line, AccountEntity.class);
+                    if (account.getUsername().equals(username) && account.getPassword().equals(password)) {
+                        return true; // Las credenciales coinciden
+                    }
+
+            }
+            br.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.e("LoginActivity", "Error checking credentials", e);
+        }
+        return false;
+    }
 }

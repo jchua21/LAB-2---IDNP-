@@ -2,6 +2,7 @@ package com.example.loginsample;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,7 +23,13 @@ public class HomeActivity extends AppCompatActivity {
             return insets;
         });
 
-        String accountEntity = getIntent().getStringExtra("ACCOUNT");
-        Log.d("HomeActivity", accountEntity);
+        String accountName = getIntent().getStringExtra("USERNAME");
+        // Buscar el TextView y configurar el mensaje de bienvenida
+        TextView welcomeMessage = findViewById(R.id.welcomeMessage);
+        if (accountName != null && !accountName.isEmpty()) {
+            welcomeMessage.setText("Bienvenido, " + accountName);
+        } else {
+            welcomeMessage.setText("Bienvenido, Usuario");
+        }
     }
 }
